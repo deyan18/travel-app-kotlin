@@ -4,59 +4,114 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="15dp"
+    android:layout_marginBottom="20dp"
+    android:background="@color/acme_background"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="sans-serif-black"
         android:text="Acme Explorer"
+        android:textAlignment="center"
+        android:textColor="@color/acme_blue_variant"
+        android:textSize="34sp"
         android:textStyle="bold" />
-
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-    </SearchView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="7dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/searchbar">
+
+
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search for an origin"
+                app:queryBackground="@color/searchbar_bg" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/searchbar">
+
+            <SearchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search for a destination"
+                app:queryBackground="@color/searchbar_bg" />
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp">
 
         <Button
             android:id="@+id/filtersButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:background="@color/acme_blue_variant"
+            android:background="@drawable/search_filters_button"
+            android:includeFontPadding="false"
+            android:textColor="@color/button_color"
             android:text="Filters"
-            android:textColor="#FFFFFF" />
+            android:textAllCaps="false"
+            android:textSize="13sp" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:text="Compact View" />
+            android:background="@drawable/search_filters_button"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/button_color"
+            android:text="Compact View"
+            android:textAllCaps="false"
+            android:textSize="13sp" />
 
         <Button
             android:id="@+id/orderByButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="Order By" />
-
-        <Button
-            android:id="@+id/bookmarksButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Bookmarks" />
+            android:background="@drawable/search_filters_button"
+            android:textColor="@color/button_color"
+            android:textAllCaps="false"
+            android:text="Order By"
+            android:textSize="13sp" />
 
 
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tripsRecyclerView"
         android:layout_width="match_parent"

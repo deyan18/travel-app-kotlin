@@ -13,6 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="227dp"
         android:maxHeight="200dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/round_outline"
+        android:clipToOutline="true"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <LinearLayout
@@ -25,14 +28,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Origin" />
+            android:fontFamily="sans-serif-medium"
+            android:text="Origin"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/destinationDetailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Destination" />
+            android:text="Destination"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout

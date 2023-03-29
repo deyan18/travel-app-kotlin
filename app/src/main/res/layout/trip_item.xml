@@ -8,8 +8,11 @@
 
     <ImageView
         android:id="@+id/tripImageView"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/round_outline"
+        android:clipToOutline="true"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <LinearLayout
@@ -22,14 +25,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Origin" />
+            android:fontFamily="sans-serif-medium"
+            android:text="Origin"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/destinationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Destination" />
+            android:fontFamily="sans-serif-medium"
+            android:text="Destination"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/priceTextView"

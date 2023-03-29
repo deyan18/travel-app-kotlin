@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="acme_blue">#5487D4</color>
     <color name="acme_blue_variant">#436CAA</color>
+    <color name="acme_non_selected">#FFD5D6D6</color>
+    <color name="acme_background">#F9FAFB</color>
+    <color name="button_color">#344054</color>
+    <color name="searchbar_bg">#F2F4F7</color>
 </resources>
