@@ -20,14 +20,18 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
+    }
+
+
     fun initRecyclerView() {
 
         val manager = GridLayoutManager(this, 3)
-        val decoration = DividerItemDecoration(this, manager.orientation)
         val recyclerView = findViewById<RecyclerView>(R.id.tripsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = TripAdapter(TripSharedPreferences.getAllTrips(this), this::onItemClicked)
-        recyclerView.addItemDecoration(decoration)
     }
 
     fun onItemClicked(trip: Trip) {

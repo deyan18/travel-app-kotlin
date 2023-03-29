@@ -40,7 +40,7 @@ object TripSharedPreferences {
         editor.apply()
     }
 
-    fun bookmarkTrip(context: Context, user: User, tripID: String) {
+    fun bookmarkTrip(context: Context, tripID: String) {
         var temp = getDefaultUser(context)
         temp.bookmarkedTrips.add(tripID)
         val gson = Gson()
@@ -49,7 +49,7 @@ object TripSharedPreferences {
         editor.apply()
     }
 
-    fun removeBookmarkedTrip(context: Context, user: User, tripID: String) {
+    fun removeBookmarkedTrip(context: Context, tripID: String) {
         var temp = getDefaultUser(context)
         temp.bookmarkedTrips.remove(tripID)
         val gson = Gson()
@@ -58,7 +58,7 @@ object TripSharedPreferences {
         editor.apply()
     }
 
-    fun purchaseTrip(context: Context, user: User, tripID: String) {
+    fun purchaseTrip(context: Context, tripID: String) {
         var temp = getDefaultUser(context)
         temp.purchasedTrips.add(tripID)
         val gson = Gson()

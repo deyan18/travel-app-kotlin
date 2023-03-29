@@ -21,8 +21,6 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
     fun render(trip: Trip, onClickListener: (Trip) -> Unit) {
-        val user = TripSharedPreferences.getDefaultUser(itemView.context)
-
         origin.text = trip.origin
         destination.text = trip.destination
         val startDateString = SimpleDateFormat("MMM d").format(trip.startDate.time)
@@ -30,11 +28,21 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val endDateString = SimpleDateFormat("MMM d").format(trip.endDate.time)
         endDate.text = endDateString
         price.text = trip.price.toString()
-        bookmark.setImageResource(if(user.bookmarkedTrips.contains(trip.id)) R.drawable.bookmark_fill else R.drawable.bookmark_border)
+        bookmark.setImageResource(if(TripSharedPreferences.getDefaultUser(itemView.context).bookmarkedTrips.contains(trip.id)) R.drawable.bookmark_fill else R.drawable.bookmark_border)
         Glide.with(itemView.context).load(trip.imgURL).into(img)
 
-        itemView.setOnClickListener {
+        img.setOnClickListener {
             onClickListener(trip)
+        }
+
+        bookmark.setOnClickListener{
+            if(TripSharedPreferences.getDefaultUser(itemView.context).bookmarkedTrips.contains(trip.id)) {
+                TripSharedPreferences.removeBookmarkedTrip(itemView.context, trip.id)
+                bookmark.setImageResource(R.drawable.bookmark_border)
+            } else {
+                TripSharedPreferences.bookmarkTrip(itemView.context, trip.id)
+                bookmark.setImageResource(R.drawable.bookmark_fill)
+            }
         }
     }
 
