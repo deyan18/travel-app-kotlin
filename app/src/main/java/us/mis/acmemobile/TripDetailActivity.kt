@@ -12,8 +12,9 @@ class TripDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trip_detail)
+        val user = TripSharedPreferences.getDefaultUser(this)
 
-        val trip = intent.getParcelableExtra<Trip>(Constants.TRIP_DETAIL)
+        val trip = intent.getParcelableExtra<Trip>(Constants.CURRENT_TRIP)
         if(trip != null) {
             val originDetailTextView = findViewById<TextView>(R.id.originDetailTextView)
             val destinationDetailTextView = findViewById<TextView>(R.id.destinationDetailTextView)
@@ -32,7 +33,7 @@ class TripDetailActivity : AppCompatActivity() {
             endDateDetailTextView.text = SimpleDateFormat("MMM d YY").format(trip.endDate.time)
             priceDetailTextView.text = trip.price.toString()
             descriptionDetailTextView.text = trip.description
-            bookmarkDetailImageView.setImageResource(if(trip.boomarked) R.drawable.bookmark_fill else R.drawable.bookmark_border)
+            bookmarkDetailImageView.setImageResource(if(user.bookmarkedTrips.contains(trip.id)) R.drawable.bookmark_fill else R.drawable.bookmark_border)
         }
 
     }

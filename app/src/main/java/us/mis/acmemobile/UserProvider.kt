@@ -4,6 +4,6 @@ import java.util.*
 
 class UserProvider {
     companion object{
-        val defaultUser = User("Deyan", listOf<String>(), listOf<String>())
+        val defaultUser = User("Deyan", mutableListOf("0"), mutableListOf())
        }
 }

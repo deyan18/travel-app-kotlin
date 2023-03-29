@@ -1,15 +1,13 @@
 package us.mis.acmemobile.adapter
 
+import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
-import android.media.Image
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import us.mis.acmemobile.R
-import us.mis.acmemobile.Trip
+import us.mis.acmemobile.*
 
 class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val origin = view.findViewById<TextView>(R.id.originTextView)
@@ -19,8 +17,12 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val price = view.findViewById<TextView>(R.id.priceTextView)
     val bookmark = view.findViewById<ImageView>(R.id.bookmarkImageView)
     val img = view.findViewById<ImageView>(R.id.tripImageView)
+    private lateinit var sharedPreferences: SharedPreferences
+
 
     fun render(trip: Trip, onClickListener: (Trip) -> Unit) {
+        val user = TripSharedPreferences.getDefaultUser(itemView.context)
+
         origin.text = trip.origin
         destination.text = trip.destination
         val startDateString = SimpleDateFormat("MMM d").format(trip.startDate.time)
@@ -28,11 +30,12 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val endDateString = SimpleDateFormat("MMM d").format(trip.endDate.time)
         endDate.text = endDateString
         price.text = trip.price.toString()
-        bookmark.setImageResource(if(trip.boomarked) R.drawable.bookmark_fill else R.drawable.bookmark_border)
+        bookmark.setImageResource(if(user.bookmarkedTrips.contains(trip.id)) R.drawable.bookmark_fill else R.drawable.bookmark_border)
         Glide.with(itemView.context).load(trip.imgURL).into(img)
 
         itemView.setOnClickListener {
             onClickListener(trip)
         }
     }
+
 }
