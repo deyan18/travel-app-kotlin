@@ -1,5 +1,6 @@
 package us.mis.acmemobile.adapter
 
+import android.icu.text.SimpleDateFormat
 import android.media.Image
 import android.view.View
 import android.widget.ImageView
@@ -22,8 +23,10 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun render(trip: Trip, onClickListener: (Trip) -> Unit) {
         origin.text = trip.origin
         destination.text = trip.destination
-        startDate.text = trip.startDate.toString()
-        endDate.text = trip.endDate.toString()
+        val startDateString = SimpleDateFormat("MMM d").format(trip.startDate.time)
+        startDate.text = startDateString
+        val endDateString = SimpleDateFormat("MMM d").format(trip.endDate.time)
+        endDate.text = endDateString
         price.text = trip.price.toString()
         bookmark.setImageResource(if(trip.boomarked) R.drawable.bookmark_fill else R.drawable.bookmark_border)
         Glide.with(itemView.context).load(trip.imgURL).into(img)
