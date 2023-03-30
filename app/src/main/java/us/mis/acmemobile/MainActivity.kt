@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, TripDetailActivity::class.java)
         intent.putExtra(Constants.CURRENT_TRIP, trip)
         startActivity(intent)
-        Toast.makeText(this, "Clicked on ${trip.origin}", Toast.LENGTH_SHORT).show()
     }
 
     fun checkCompactViewModeButton(){
@@ -54,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         }else{
             compactViewModeButton.background = getDrawable(R.drawable.search_filters_button)
             compactViewModeButton.setTextColor(ContextCompat.getColor(this, R.color.button_color))
-
         }
 
         compactViewModeButton.setOnClickListener{
