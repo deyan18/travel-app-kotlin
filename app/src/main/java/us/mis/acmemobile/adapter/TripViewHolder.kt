@@ -17,7 +17,6 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val price = view.findViewById<TextView>(R.id.priceTextView)
     val bookmark = view.findViewById<ImageView>(R.id.bookmarkImageView)
     val img = view.findViewById<ImageView>(R.id.tripImageView)
-    private lateinit var sharedPreferences: SharedPreferences
 
 
     fun render(trip: Trip, onClickListener: (Trip) -> Unit) {
@@ -27,7 +26,7 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         startDate.text = startDateString
         val endDateString = SimpleDateFormat("MMM d").format(trip.endDate.time)
         endDate.text = endDateString
-        price.text = trip.price.toString()
+        price.text = trip.price.toString() + "€"
         bookmark.setImageResource(if(TripSharedPreferences.getDefaultUser(itemView.context).bookmarkedTrips.contains(trip.id)) R.drawable.bookmark_fill else R.drawable.bookmark_border)
         Glide.with(itemView.context).load(trip.imgURL).into(img)
 

@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="15dp"
-    android:layout_marginBottom="20dp"
     android:background="@color/acme_background"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -15,47 +13,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:fontFamily="sans-serif-black"
         android:text="Acme Explorer"
         android:textAlignment="center"
         android:textColor="@color/acme_blue_variant"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="7dp">
+        android:layout_marginHorizontal="10dp"
+        android:clipToPadding="false">
 
         <FrameLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
             android:background="@drawable/searchbar">
 
 
             <SearchView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"
-                android:queryHint="Search for an origin"
+                android:queryHint="Origin"
                 app:queryBackground="@color/searchbar_bg" />
 
         </FrameLayout>
 
         <FrameLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/searchbar">
 
             <SearchView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:iconifiedByDefault="false"
-                android:queryHint="Search for a destination"
+                android:queryHint="Destination"
                 app:queryBackground="@color/searchbar_bg" />
 
         </FrameLayout>
@@ -66,7 +65,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
+        android:layout_marginHorizontal="35dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp"
@@ -80,22 +79,22 @@
             android:layout_weight="1"
             android:background="@drawable/search_filters_button"
             android:includeFontPadding="false"
-            android:textColor="@color/button_color"
             android:text="Filters"
             android:textAllCaps="false"
+            android:textColor="@color/button_color"
             android:textSize="13sp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/compactViewModeButton"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
             android:background="@drawable/search_filters_button"
             android:paddingHorizontal="10dp"
-            android:textColor="@color/button_color"
             android:text="Compact View"
             android:textAllCaps="false"
+            android:textColor="@color/button_color"
             android:textSize="13sp" />
 
         <Button
@@ -104,18 +103,20 @@
             android:layout_height="35dp"
             android:layout_weight="1"
             android:background="@drawable/search_filters_button"
-            android:textColor="@color/button_color"
-            android:textAllCaps="false"
             android:text="Order By"
+            android:textAllCaps="false"
+            android:textColor="@color/button_color"
             android:textSize="13sp" />
 
 
     </LinearLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tripsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="5dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

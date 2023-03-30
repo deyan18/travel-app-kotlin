@@ -15,7 +15,8 @@ object TripSharedPreferences {
         editor = sharedPreferences.edit()
 
         addDefaultUser(context, UserProvider.defaultUser)
-        addTrips(context, TripProvider.trips)
+        setTrips(context, TripProvider.trips)
+        setCompactViewMode(context, false)
     }
 
     fun getAllTrips(context: Context): List<Trip> {
@@ -31,14 +32,14 @@ object TripSharedPreferences {
         return temp
     }
 
-    fun addTrips(context: Context, trips: List<Trip>) {
-        val temp = getAllTrips(context).toMutableList()
-        temp.addAll(trips)
+    fun setTrips(context: Context, trips: List<Trip>) {
+        val temp = trips.toMutableList()
         val gson = Gson()
         val dbs = gson.toJson(temp)
         editor.putString(Constants.TRIPS, dbs).apply()
         editor.apply()
     }
+
 
     fun bookmarkTrip(context: Context, tripID: String) {
         var temp = getDefaultUser(context)
@@ -85,5 +86,14 @@ object TripSharedPreferences {
         val dbs = gson.toJson(user)
         editor.putString(Constants.DEFAULT_USER, dbs).apply()
         editor.apply()
+    }
+
+    fun setCompactViewMode(context: Context, compactViewOn: Boolean) {
+        editor.putBoolean(Constants.COMPACT_VIEW_ON, compactViewOn).apply()
+        editor.apply()
+    }
+
+    fun getCompactViewMode(context: Context): Boolean {
+        return sharedPreferences.getBoolean(Constants.COMPACT_VIEW_ON, false)
     }
 }
