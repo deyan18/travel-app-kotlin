@@ -13,4 +13,5 @@
     <color name="acme_background">#F9FAFB</color>
     <color name="button_color">#344054</color>
     <color name="searchbar_bg">#F2F4F7</color>
+    <color name="red">#DA0000</color>
 </resources>

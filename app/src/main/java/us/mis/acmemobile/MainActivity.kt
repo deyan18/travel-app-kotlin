@@ -1,17 +1,14 @@
 package us.mis.acmemobile
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import us.mis.acmemobile.adapter.TripAdapter
 
 
@@ -19,6 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var compactViewModeButton: Button
     lateinit var bookmarksViewModeButton: Button
+    lateinit var filtersButton: Button
     lateinit var originSearchView: SearchView
     lateinit var destinationSearchView: SearchView
     lateinit var recyclerView: RecyclerView
@@ -29,8 +27,35 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         compactViewModeButton = findViewById<Button>(R.id.compactViewModeButton)
         bookmarksViewModeButton = findViewById<Button>(R.id.bookmarksViewModeButton)
+        filtersButton = findViewById<Button>(R.id.filtersButton)
         originSearchView = findViewById(R.id.originSearchView)
         destinationSearchView = findViewById(R.id.destinationSearchView)
+
+        filtersButton.setOnClickListener{
+            // on below line we are creating a new bottom sheet dialog.
+            val dialog = BottomSheetDialog(this)
+
+            // on below line we are inflating a layout file which we have created.
+            val view = layoutInflater.inflate(R.layout.bottom_sheet, null)
+
+            // on below line we are creating a variable for our button
+            // which we are using to dismiss our dialog.
+            val saveButton = view.findViewById<Button>(R.id.saveButton)
+            val removeButton = view.findViewById<Button>(R.id.removeButton)
+
+
+            saveButton.setOnClickListener {
+
+                dialog.dismiss()
+            }
+            removeButton.setOnClickListener {
+
+                dialog.dismiss()
+            }
+            dialog.setCancelable(false)
+            dialog.setContentView(view)
+            dialog.show()
+        }
 
 
         initRecyclerView()
