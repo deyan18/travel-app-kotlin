@@ -17,11 +17,13 @@ import us.mis.acmemobile.adapter.TripAdapter
 class MainActivity : AppCompatActivity() {
 
     lateinit var compactViewModeButton: Button
+    lateinit var bookmarksViewModeButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         compactViewModeButton = findViewById<Button>(R.id.compactViewModeButton)
+        bookmarksViewModeButton = findViewById<Button>(R.id.bookmarksViewModeButton)
 
         initRecyclerView()
     }
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     fun initRecyclerView() {
         checkCompactViewModeButton()
+        checkBookmarksButton()
         val manager = GridLayoutManager(this, if(TripSharedPreferences.getCompactViewMode(this)) 2 else 1)
         val recyclerView = findViewById<RecyclerView>(R.id.tripsRecyclerView)
         recyclerView.layoutManager = manager
@@ -57,6 +60,21 @@ class MainActivity : AppCompatActivity() {
 
         compactViewModeButton.setOnClickListener{
             TripSharedPreferences.setCompactViewMode(this, !TripSharedPreferences.getCompactViewMode(this))
+            initRecyclerView()
+        }
+    }
+
+    fun checkBookmarksButton(){
+        if(TripSharedPreferences.getBookmarksViewMode(this)){
+            bookmarksViewModeButton.background = getDrawable(R.drawable.search_filters_button_selected)
+            bookmarksViewModeButton.setTextColor(ContextCompat.getColor(this, R.color.white))
+        }else{
+            bookmarksViewModeButton.background = getDrawable(R.drawable.search_filters_button)
+            bookmarksViewModeButton.setTextColor(ContextCompat.getColor(this, R.color.button_color))
+        }
+
+        bookmarksViewModeButton.setOnClickListener{
+            TripSharedPreferences.setBookmarksViewMode(this, !TripSharedPreferences.getBookmarksViewMode(this))
             initRecyclerView()
         }
     }

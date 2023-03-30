@@ -20,4 +20,5 @@ class TripAdapter(private val tripList: List<Trip>, private val onClickListener:
         val trip = tripList[position]
         holder.render(trip, onClickListener)
     }
+
 }

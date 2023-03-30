@@ -20,6 +20,7 @@ class TripViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
     fun render(trip: Trip, onClickListener: (Trip) -> Unit) {
+
         origin.text = trip.origin
         destination.text = trip.destination
         val startDateString = SimpleDateFormat("MMM d").format(trip.startDate.time)

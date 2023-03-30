@@ -65,7 +65,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="35dp"
+        android:layout_marginHorizontal="20dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp"
@@ -97,13 +97,15 @@
             android:textColor="@color/button_color"
             android:textSize="13sp" />
 
+
         <Button
-            android:id="@+id/orderByButton"
+            android:id="@+id/bookmarksViewModeButton"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_weight="1"
+
             android:background="@drawable/search_filters_button"
-            android:text="Order By"
+            android:text="Bookmarks"
             android:textAllCaps="false"
             android:textColor="@color/button_color"
             android:textSize="13sp" />

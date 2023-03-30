@@ -29,7 +29,12 @@ object TripSharedPreferences {
             val type = object : TypeToken<List<Trip>>() {}.type
             gson.fromJson(content, type)
         }
-        return temp
+
+        return if (getBookmarksViewMode(context)) {
+            temp.filter { it.id in getDefaultUser(context).bookmarkedTrips }
+        } else {
+            temp
+        }
     }
 
     fun setTrips(context: Context, trips: List<Trip>) {
@@ -95,5 +100,14 @@ object TripSharedPreferences {
 
     fun getCompactViewMode(context: Context): Boolean {
         return sharedPreferences.getBoolean(Constants.COMPACT_VIEW_ON, false)
+    }
+
+    fun setBookmarksViewMode(context: Context, bookmarksViewOn: Boolean) {
+        editor.putBoolean(Constants.BOOKMARKS_VIEW_ON, bookmarksViewOn).apply()
+        editor.apply()
+    }
+
+    fun getBookmarksViewMode(context: Context): Boolean {
+        return sharedPreferences.getBoolean(Constants.BOOKMARKS_VIEW_ON, false)
     }
 }
