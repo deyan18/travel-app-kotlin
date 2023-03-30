@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,12 +19,19 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var compactViewModeButton: Button
     lateinit var bookmarksViewModeButton: Button
+    lateinit var originSearchView: SearchView
+    lateinit var destinationSearchView: SearchView
+    lateinit var recyclerView: RecyclerView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         compactViewModeButton = findViewById<Button>(R.id.compactViewModeButton)
         bookmarksViewModeButton = findViewById<Button>(R.id.bookmarksViewModeButton)
+        originSearchView = findViewById(R.id.originSearchView)
+        destinationSearchView = findViewById(R.id.destinationSearchView)
+
 
         initRecyclerView()
     }
@@ -37,10 +45,13 @@ class MainActivity : AppCompatActivity() {
     fun initRecyclerView() {
         checkCompactViewModeButton()
         checkBookmarksButton()
+        checkSearch()
+
         val manager = GridLayoutManager(this, if(TripSharedPreferences.getCompactViewMode(this)) 2 else 1)
-        val recyclerView = findViewById<RecyclerView>(R.id.tripsRecyclerView)
+        recyclerView = findViewById<RecyclerView>(R.id.tripsRecyclerView)
         recyclerView.layoutManager = manager
-        recyclerView.adapter = TripAdapter(TripSharedPreferences.getAllTrips(this), this::onItemClicked, TripSharedPreferences.getCompactViewMode(this))
+        updateRecyclerView()
+
     }
 
     fun onItemClicked(trip: Trip) {
@@ -78,5 +89,41 @@ class MainActivity : AppCompatActivity() {
             initRecyclerView()
         }
     }
+
+    fun checkSearch(){
+        TripSharedPreferences.setOriginQuery(this, originSearchView.query.toString())
+        TripSharedPreferences.setDestinationQuery(this, destinationSearchView.query.toString())
+
+        originSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Call a method to filter the data based on the new search query
+                TripSharedPreferences.setOriginQuery(this@MainActivity, newText.toString())
+                updateRecyclerView()
+                return true
+            }
+        })
+
+        destinationSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Call a method to filter the data based on the new search query
+                TripSharedPreferences.setDestinationQuery(this@MainActivity, newText.toString())
+                updateRecyclerView()
+                return true
+            }
+        })
+    }
+
+    fun updateRecyclerView(){
+        recyclerView.adapter = TripAdapter(TripSharedPreferences.getFilteredTrips(this), this::onItemClicked, TripSharedPreferences.getCompactViewMode(this))
+    }
+
 
 }

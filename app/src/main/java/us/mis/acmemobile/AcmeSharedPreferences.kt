@@ -17,6 +17,8 @@ object TripSharedPreferences {
         addDefaultUser(context, UserProvider.defaultUser)
         setTrips(context, TripProvider.trips)
         setCompactViewMode(context, false)
+        setOriginQuery(context, "")
+        setDestinationQuery(context, "")
     }
 
     fun getAllTrips(context: Context): List<Trip> {
@@ -30,11 +32,49 @@ object TripSharedPreferences {
             gson.fromJson(content, type)
         }
 
-        return if (getBookmarksViewMode(context)) {
+        return temp
+    }
+
+    fun getFilteredTrips(context: Context): List<Trip> {
+        val gson = Gson()
+        val content = sharedPreferences.getString(Constants.TRIPS, "")
+
+        var temp: List<Trip> = if (content!!.isEmpty()) {
+            ArrayList()
+        } else {
+            val type = object : TypeToken<List<Trip>>() {}.type
+            gson.fromJson(content, type)
+        }
+
+        //Search filters
+        val originQuery = getOriginQuery(context)
+        val destinationQuery = getDestinationQuery(context)
+
+        temp = if (!originQuery.isNullOrBlank() && !destinationQuery.isNullOrBlank()) {
+            // Filter the trips by origin and destination that contain the search query
+            temp.filter { trip ->
+                trip.origin.contains(originQuery, true) && trip.destination.contains(destinationQuery, true)
+            }
+        }else if (!originQuery.isNullOrBlank()) {
+            temp.filter { trip ->
+                trip.origin.contains(originQuery, true)
+            }
+        }else if (!destinationQuery.isNullOrBlank()) {
+            temp.filter { trip ->
+                trip.destination.contains(destinationQuery, true)
+            }
+        }else{
+            temp
+        }
+
+        //Bookmarks filter
+        temp = if (getBookmarksViewMode(context)) {
             temp.filter { it.id in getDefaultUser(context).bookmarkedTrips }
         } else {
             temp
         }
+
+        return temp
     }
 
     fun setTrips(context: Context, trips: List<Trip>) {
@@ -109,5 +149,23 @@ object TripSharedPreferences {
 
     fun getBookmarksViewMode(context: Context): Boolean {
         return sharedPreferences.getBoolean(Constants.BOOKMARKS_VIEW_ON, false)
+    }
+
+    fun setOriginQuery(context: Context, originQuery: String) {
+        editor.putString(Constants.ORIGIN_QUERY, originQuery).apply()
+        editor.apply()
+    }
+
+    fun getOriginQuery(context: Context): String {
+        return sharedPreferences.getString(Constants.ORIGIN_QUERY, "")!!
+    }
+
+    fun setDestinationQuery(context: Context, destinationQuery: String) {
+        editor.putString(Constants.DESTINATION_QUERY, destinationQuery).apply()
+        editor.apply()
+    }
+
+    fun getDestinationQuery(context: Context): String {
+        return sharedPreferences.getString(Constants.DESTINATION_QUERY, "")!!
     }
 }

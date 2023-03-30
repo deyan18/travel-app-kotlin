@@ -7,4 +7,6 @@ object Constants {
     const val DEFAULT_USER = "default_user"
     const val COMPACT_VIEW_ON = "compact_view_on"
     const val BOOKMARKS_VIEW_ON = "bookmarks_view_on"
+    const val ORIGIN_QUERY = "origin_query"
+    const val DESTINATION_QUERY = "destination_query"
 }
