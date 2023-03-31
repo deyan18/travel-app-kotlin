@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.Calendar
 
-data class Trip (val id: String,val origin: String, val destination: String, val description: String, val startDate: Calendar, val endDate: Calendar, val price: Double, val boomarked: Boolean, val imgURL: String) : Parcelable {
+data class Trip (val id: String,val origin: String, val destination: String, val description: String, val startDate: Calendar, val endDate: Calendar, val price: Double, val imgURL: String) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
@@ -13,12 +13,11 @@ data class Trip (val id: String,val origin: String, val destination: String, val
         (parcel.readSerializable() as Calendar),
         (parcel.readSerializable() as Calendar),
         parcel.readDouble(),
-        parcel.readByte() != 0.toByte(),
         parcel.readString()!!
     ) {
     }
 
-    constructor() : this("","", "", "", Calendar.getInstance(), Calendar.getInstance(), 0.0, false, "")
+    constructor() : this("","", "", "", Calendar.getInstance(), Calendar.getInstance(), 0.0, "")
 
     override fun describeContents(): Int {
         return 0
@@ -32,7 +31,6 @@ data class Trip (val id: String,val origin: String, val destination: String, val
         p0.writeSerializable(startDate)
         p0.writeSerializable(endDate)
         p0.writeDouble(price)
-        p0.writeByte(if (boomarked) 1 else 0)
         p0.writeString(imgURL)
     }
 

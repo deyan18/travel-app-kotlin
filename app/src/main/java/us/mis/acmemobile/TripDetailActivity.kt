@@ -51,8 +51,8 @@ class TripDetailActivity : AppCompatActivity() {
             Glide.with(imgImageView.context).load(trip.imgURL).into(imgImageView)
             originTextView.text = trip.origin
             destinationTextView.text = trip.destination
-            startDateTextView.text = SimpleDateFormat("MMM d YY").format(trip.startDate.time)
-            endDateTextView.text = SimpleDateFormat("MMM d YY").format(trip.endDate.time)
+            startDateTextView.text = SimpleDateFormat("MMM d yyyy").format(trip.startDate.time)
+            endDateTextView.text = SimpleDateFormat("MMM d yyyy").format(trip.endDate.time)
             priceTextView.text = trip.price.toString() + " €"
             descriptionTextView.text = trip.description
             bookmarkImageView.setImageResource(if(TripSharedPreferences.getDefaultUser(this).bookmarkedTrips.contains(trip.id)) R.drawable.bookmark_fill else R.drawable.bookmark_border)

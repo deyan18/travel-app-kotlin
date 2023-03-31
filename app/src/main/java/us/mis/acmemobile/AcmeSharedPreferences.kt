@@ -22,6 +22,8 @@ object TripSharedPreferences {
         setDestinationQuery(context, "")
         setStartDate(context, "")
         setEndDate(context, "")
+        setPriceRangeStart(context, -1)
+        setPriceRangeEnd(context, -1)
     }
 
     fun getAllTrips(context: Context): List<Trip> {
