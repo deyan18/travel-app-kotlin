@@ -3,7 +3,6 @@ package us.mis.acmemobile
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -11,10 +10,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.slider.LabelFormatter
+import com.google.android.material.slider.RangeSlider
 import us.mis.acmemobile.adapter.TripAdapter
 import java.util.*
 
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var startDateTextView: TextView
     lateinit var endDateImageView: ImageView
     lateinit var startDateImageView: ImageView
+    lateinit var priceRangeSlider: RangeSlider
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,6 +160,32 @@ class MainActivity : AppCompatActivity() {
             startDateTextView = view.findViewById(R.id.startDateTextView)
             endDateImageView = view.findViewById(R.id.endDateImageView)
             startDateImageView = view.findViewById(R.id.startDateImageView)
+            priceRangeSlider = view.findViewById(R.id.sliderRange)
+
+            //Get lowest trip price
+            val trips = TripSharedPreferences.getAllTrips(this)
+
+            // Set minimum and maximum values
+            priceRangeSlider.valueFrom = trips.minOf { it.price.toFloat() }
+            priceRangeSlider.valueTo = trips.maxOf { it.price.toFloat() }
+
+            if(TripSharedPreferences.getPriceRangeStart(this) != -1 && TripSharedPreferences.getPriceRangeEnd(this) != -1) {
+                priceRangeSlider.setValues(
+                    TripSharedPreferences.getPriceRangeStart(this).toFloat(),
+                    TripSharedPreferences.getPriceRangeEnd(this).toFloat()
+                )
+            }else{
+                priceRangeSlider.setValues(
+                    trips.minOf { it.price.toFloat() },
+                    trips.maxOf { it.price.toFloat() }
+                )
+            }
+
+            priceRangeSlider.labelBehavior = LabelFormatter.LABEL_VISIBLE
+
+            priceRangeSlider.setLabelFormatter { value ->
+                value.toInt().toString() + "€"
+            }
 
             endDateTextView.text = endDateSaved
             startDateTextView.text = startDateSaved
@@ -230,6 +259,8 @@ class MainActivity : AppCompatActivity() {
             saveButton.setOnClickListener{
                 TripSharedPreferences.setStartDate(this, startDateTextView.text.toString())
                 TripSharedPreferences.setEndDate(this, endDateTextView.text.toString())
+                TripSharedPreferences.setPriceRangeStart(this, priceRangeSlider.values[0].toInt())
+                TripSharedPreferences.setPriceRangeEnd(this, priceRangeSlider.values[1].toInt())
                 updateRecyclerView()
                 checkFiltersButton()
                 dialog.dismiss()
@@ -238,6 +269,8 @@ class MainActivity : AppCompatActivity() {
             removeButton.setOnClickListener{
                 TripSharedPreferences.setStartDate(this, "")
                 TripSharedPreferences.setEndDate(this, "")
+                TripSharedPreferences.setPriceRangeStart(this, -1)
+                TripSharedPreferences.setPriceRangeEnd(this, -1)
                 updateRecyclerView()
                 checkFiltersButton()
                 dialog.dismiss()
@@ -249,7 +282,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun checkFiltersButton(){
-        if(TripSharedPreferences.getStartDate(this) == "" && TripSharedPreferences.getEndDate(this) == ""){
+        if(TripSharedPreferences.getStartDate(this) == "" && TripSharedPreferences.getEndDate(this) == "" && TripSharedPreferences.getPriceRangeStart(this) == -1 && TripSharedPreferences.getPriceRangeEnd(this) == -1){
             filtersButton.background = getDrawable(R.drawable.search_filters_button)
             filtersButton.setTextColor(ContextCompat.getColor(this, R.color.button_color))       }else{
             filtersButton.background = getDrawable(R.drawable.search_filters_button_selected)

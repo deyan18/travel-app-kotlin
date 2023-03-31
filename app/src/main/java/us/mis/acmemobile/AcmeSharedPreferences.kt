@@ -104,7 +104,25 @@ object TripSharedPreferences {
             temp
         }
 
+        //Price filter
+        val priceRangeStart = getPriceRangeStart(context)
+        val priceRangeEnd = getPriceRangeEnd(context)
 
+        temp = if (priceRangeStart != -1 && priceRangeEnd != -1) {
+            temp.filter { trip ->
+                trip.price >= priceRangeStart && trip.price <= priceRangeEnd
+            }
+        } else if (priceRangeStart != -1) {
+            temp.filter { trip ->
+                trip.price >= priceRangeStart
+            }
+        } else if (priceRangeEnd != -1) {
+            temp.filter { trip ->
+                trip.price <= priceRangeEnd
+            }
+        } else {
+            temp
+        }
 
 
         return temp
@@ -218,5 +236,23 @@ object TripSharedPreferences {
 
     fun getEndDate(context: Context): String {
         return sharedPreferences.getString(Constants.END_DATE, "")!!
+    }
+
+    fun setPriceRangeStart(context: Context, priceRangeStart: Int) {
+        editor.putInt(Constants.PRICE_RANGE_START, priceRangeStart).apply()
+        editor.apply()
+    }
+
+    fun getPriceRangeStart(context: Context): Int {
+        return sharedPreferences.getInt(Constants.PRICE_RANGE_START, -1)
+    }
+
+    fun setPriceRangeEnd(context: Context, priceRangeEnd: Int) {
+        editor.putInt(Constants.PRICE_RANGE_END, priceRangeEnd).apply()
+        editor.apply()
+    }
+
+    fun getPriceRangeEnd(context: Context): Int {
+        return sharedPreferences.getInt(Constants.PRICE_RANGE_END, -1)
     }
 }

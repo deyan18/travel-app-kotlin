@@ -11,4 +11,6 @@ object Constants {
     const val DESTINATION_QUERY = "destination_query"
     const val START_DATE = "start_date"
     const val END_DATE = "end_date"
+    const val PRICE_RANGE_START = "price_range_start"
+    const val PRICE_RANGE_END = "price_range_end"
 }
