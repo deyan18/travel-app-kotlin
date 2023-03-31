@@ -1,12 +1,16 @@
 package us.mis.acmemobile
 
 import android.icu.text.SimpleDateFormat
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 
 
@@ -26,6 +30,7 @@ class TripDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusBar()
         setContentView(R.layout.activity_trip_detail)
 
         val trip = intent.getParcelableExtra<Trip>(Constants.CURRENT_TRIP)
@@ -91,5 +96,19 @@ class TripDetailActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    fun setStatusBar(){
+        //Not the best solution but I want the status bar to look cohesive with the app
+        if (Build.VERSION.SDK_INT >= 21) {
+            val window = this.window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = ContextCompat.getColor(this, R.color.acme_background)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val decorView = window.decorView
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
     }
 }
