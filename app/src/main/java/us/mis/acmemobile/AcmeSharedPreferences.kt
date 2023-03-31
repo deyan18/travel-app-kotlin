@@ -2,6 +2,7 @@ package us.mis.acmemobile
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.icu.text.SimpleDateFormat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -19,6 +20,8 @@ object TripSharedPreferences {
         setCompactViewMode(context, false)
         setOriginQuery(context, "")
         setDestinationQuery(context, "")
+        setStartDate(context, "")
+        setEndDate(context, "")
     }
 
     fun getAllTrips(context: Context): List<Trip> {
@@ -73,6 +76,36 @@ object TripSharedPreferences {
         } else {
             temp
         }
+
+        //Date filter
+        val startDate = getStartDate(context)
+        val endDate = getEndDate(context)
+
+        temp = if (!startDate.isNullOrBlank() && !endDate.isNullOrBlank()) {
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val start = sdf.parse(startDate)
+            val end = sdf.parse(endDate)
+            temp.filter { trip ->
+                trip.startDate.time.after(start) && trip.endDate.time.before(end)
+            }
+        } else if (!startDate.isNullOrBlank()) {
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val start = sdf.parse(startDate)
+            temp.filter { trip ->
+                trip.startDate.time.after(start)
+            }
+        } else if (!endDate.isNullOrBlank()) {
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val end = sdf.parse(endDate)
+            temp.filter { trip ->
+                trip.endDate.time.before(end)
+            }
+        } else {
+            temp
+        }
+
+
+
 
         return temp
     }
@@ -167,5 +200,23 @@ object TripSharedPreferences {
 
     fun getDestinationQuery(context: Context): String {
         return sharedPreferences.getString(Constants.DESTINATION_QUERY, "")!!
+    }
+
+    fun setStartDate(context: Context, startDate: String) {
+        editor.putString(Constants.START_DATE, startDate).apply()
+        editor.apply()
+    }
+
+    fun getStartDate(context: Context): String {
+        return sharedPreferences.getString(Constants.START_DATE, "")!!
+    }
+
+    fun setEndDate(context: Context, endDate: String) {
+        editor.putString(Constants.END_DATE, endDate).apply()
+        editor.apply()
+    }
+
+    fun getEndDate(context: Context): String {
+        return sharedPreferences.getString(Constants.END_DATE, "")!!
     }
 }

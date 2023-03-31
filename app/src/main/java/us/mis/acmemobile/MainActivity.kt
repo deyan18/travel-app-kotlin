@@ -1,15 +1,19 @@
 package us.mis.acmemobile
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import us.mis.acmemobile.adapter.TripAdapter
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +24,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var originSearchView: SearchView
     lateinit var destinationSearchView: SearchView
     lateinit var recyclerView: RecyclerView
+    lateinit var endDateTextView: TextView
+    lateinit var startDateTextView: TextView
+    lateinit var endDateImageView: ImageView
+    lateinit var startDateImageView: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,31 +39,9 @@ class MainActivity : AppCompatActivity() {
         originSearchView = findViewById(R.id.originSearchView)
         destinationSearchView = findViewById(R.id.destinationSearchView)
 
-        filtersButton.setOnClickListener{
-            // on below line we are creating a new bottom sheet dialog.
-            val dialog = BottomSheetDialog(this)
-
-            // on below line we are inflating a layout file which we have created.
-            val view = layoutInflater.inflate(R.layout.bottom_sheet, null)
-
-            // on below line we are creating a variable for our button
-            // which we are using to dismiss our dialog.
-            val saveButton = view.findViewById<Button>(R.id.saveButton)
-            val removeButton = view.findViewById<Button>(R.id.removeButton)
 
 
-            saveButton.setOnClickListener {
 
-                dialog.dismiss()
-            }
-            removeButton.setOnClickListener {
-
-                dialog.dismiss()
-            }
-            dialog.setCancelable(false)
-            dialog.setContentView(view)
-            dialog.show()
-        }
 
 
         initRecyclerView()
@@ -71,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         checkCompactViewModeButton()
         checkBookmarksButton()
         checkSearch()
+        checkFilters()
 
         val manager = GridLayoutManager(this, if(TripSharedPreferences.getCompactViewMode(this)) 2 else 1)
         recyclerView = findViewById<RecyclerView>(R.id.tripsRecyclerView)
@@ -149,6 +136,122 @@ class MainActivity : AppCompatActivity() {
     fun updateRecyclerView(){
         recyclerView.adapter = TripAdapter(TripSharedPreferences.getFilteredTrips(this), this::onItemClicked, TripSharedPreferences.getCompactViewMode(this))
     }
+
+    fun checkFilters() {
+        checkFiltersButton()
+
+        filtersButton.setOnClickListener{
+            val startDateSaved = TripSharedPreferences.getStartDate(this)
+            val endDateSaved = TripSharedPreferences.getEndDate(this)
+
+            val dialog = BottomSheetDialog(this)
+            val view = layoutInflater.inflate(R.layout.bottom_sheet, null)
+            val saveButton = view.findViewById<Button>(R.id.saveButton)
+            val removeButton = view.findViewById<Button>(R.id.removeButton)
+            endDateTextView = view.findViewById(R.id.endDateTextView)
+            startDateTextView = view.findViewById(R.id.startDateTextView)
+            endDateImageView = view.findViewById(R.id.endDateImageView)
+            startDateImageView = view.findViewById(R.id.startDateImageView)
+
+            endDateTextView.text = endDateSaved
+            startDateTextView.text = startDateSaved
+
+            val calendar = Calendar.getInstance()
+            var yyStart = calendar.get(Calendar.YEAR)
+            var mmStart = calendar.get(Calendar.MONTH)
+            var ddStart = calendar.get(Calendar.DAY_OF_MONTH)
+            var yyEnd = calendar.get(Calendar.YEAR)
+            var mmEnd = calendar.get(Calendar.MONTH)
+            var ddEnd = calendar.get(Calendar.DAY_OF_MONTH)
+
+            if(startDateSaved != ""){
+                val startDate = startDateSaved.split("/")
+                yyStart = startDate[2].toInt()
+                mmStart = startDate[1].toInt() - 1
+                ddStart = startDate[0].toInt()
+            }
+
+            if(endDateSaved != ""){
+                val endDate = endDateSaved.split("/")
+                yyEnd = endDate[2].toInt()
+                mmEnd = endDate[1].toInt() - 1
+                ddEnd = endDate[0].toInt()
+            }
+
+            startDateImageView.setOnClickListener{
+                val today = Calendar.getInstance()
+
+                val datePickerDialog = DatePickerDialog(
+                    this,
+                    { datePicker, year, month, day ->
+                        startDateTextView.text = "$day/${month + 1}/$year"
+                        yyStart = year
+                        mmStart = month
+                        ddStart = day
+                    },
+                    yyStart, mmStart, ddStart
+                )
+                datePickerDialog.datePicker.minDate = today.timeInMillis
+
+                datePickerDialog.show()
+            }
+
+            endDateImageView.setOnClickListener{
+                val today = Calendar.getInstance()
+
+                val datePickerDialog = DatePickerDialog(
+                    this,
+                    DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                        endDateTextView.text = "$day/${month + 1}/$year"
+                        yyEnd = year
+                        mmEnd = month
+                        ddEnd = day
+                    },
+                    yyEnd, mmEnd, ddEnd
+                )
+
+                if (yyStart != 0 && mmStart != 0 && ddStart != 0) {
+                    val minDate = Calendar.getInstance().apply {
+                        set(yyStart, mmStart, ddStart, 0, 0, 0)
+                    }.timeInMillis
+                    datePickerDialog.datePicker.minDate = minDate
+                } else {
+                    datePickerDialog.datePicker.minDate = today.timeInMillis
+                }
+
+                datePickerDialog.show()
+            }
+
+            saveButton.setOnClickListener{
+                TripSharedPreferences.setStartDate(this, startDateTextView.text.toString())
+                TripSharedPreferences.setEndDate(this, endDateTextView.text.toString())
+                updateRecyclerView()
+                checkFiltersButton()
+                dialog.dismiss()
+            }
+
+            removeButton.setOnClickListener{
+                TripSharedPreferences.setStartDate(this, "")
+                TripSharedPreferences.setEndDate(this, "")
+                updateRecyclerView()
+                checkFiltersButton()
+                dialog.dismiss()
+            }
+
+            dialog.setContentView(view)
+            dialog.show()
+        }
+    }
+
+    fun checkFiltersButton(){
+        if(TripSharedPreferences.getStartDate(this) == "" && TripSharedPreferences.getEndDate(this) == ""){
+            filtersButton.background = getDrawable(R.drawable.search_filters_button)
+            filtersButton.setTextColor(ContextCompat.getColor(this, R.color.button_color))       }else{
+            filtersButton.background = getDrawable(R.drawable.search_filters_button_selected)
+            filtersButton.setTextColor(ContextCompat.getColor(this, R.color.white))
+        }
+    }
+
 
 
 }

@@ -9,4 +9,6 @@ object Constants {
     const val BOOKMARKS_VIEW_ON = "bookmarks_view_on"
     const val ORIGIN_QUERY = "origin_query"
     const val DESTINATION_QUERY = "destination_query"
+    const val START_DATE = "start_date"
+    const val END_DATE = "end_date"
 }
