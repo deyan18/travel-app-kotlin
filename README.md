@@ -1,5 +1,11 @@
 # Kotlin Travel App
 
+![App homepage with all trips](https://i.imgur.com/2kGXWmC.png)
+![Trip detail view](https://i.imgur.com/4IWCKEU.png)
+![Homepage compact view](https://i.imgur.com/adS9MNW.png)
+![Filters sheet](https://i.imgur.com/3V7BeBL.png)
+
+
 ## Introduction
 
 This project was developed as part of the "Master's Degree in Software Engineering: Cloud, Data, and Information Technology Management" program. The app was built using Kotlin programming language and was designed to provide users with an easy and convenient way to search for trips. 
