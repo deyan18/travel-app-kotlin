@@ -20,7 +20,7 @@ Users can click on a trip to open a detailed view, which displays more informati
 
 ## Future Development
 
-This app is just the beginning of what I plan to build. In the future, I plan to continue the development of the app as an iOS app in Swift. I also plan to integrate Firebase to provide real-time data synchronization, user authentication, and cloud storage. 
+This app is just the beginning of what I plan to build. In the future, I plan to continue the development of the app as an iOS app in Swift. I also plan to integrate Firebase to provide real-time data synchronization, user authentication, cloud storage, firestore, analytics, notifications...
 
 ## Conclusion
 
